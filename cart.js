@@ -10,7 +10,23 @@ let eventTitle = document.createElement("p");
 let howManyGuest = document.createElement("p");
 let selectedMenuItems_Title = document.createElement("h4");
 
+let firstMenuWrappper = document.createElement("ul");
+
+let mainMenuWrappper = document.createElement("ul");
+
+let menuTitle = document.createElement("p");
+
+let firstCourseTitle = document.createElement("p");
+
+let mainCourseTitle = document.createElement("p");
+let firstMenufirstmenuSelected;
+let mainMenufirstmenuSelected;
+let selected;
+
 function cartDetails() {
+  // firstMenufirstmenuSelected.textContent = "";
+  // mainMenufirstmenuSelected.textContent = "";
+
   // reset the form
 
   createElement = true;
@@ -40,8 +56,39 @@ function cartDetails() {
     gettingInfo.appendChild(howManyGuest);
 
     selectedMenuItems_Title.className = "";
-    selectedMenuItems_Title.innerHTML = `<strong>Selected Dinner? : </strong> ${titleH4.toUpperCase()}`;
+    selectedMenuItems_Title.innerHTML = `<strong>Selected Dinner? : </strong> ${currentMenu.toUpperCase()}`;
     gettingInfo.appendChild(selectedMenuItems_Title);
+
+    menuTitle.className = "";
+    menuTitle.innerHTML = `<strong>Menu : </strong> ${packageTitle.textContent}`;
+    gettingInfo.appendChild(menuTitle);
+
+    gettingInfo.appendChild(firstMenuWrappper);
+    gettingInfo.appendChild(mainMenuWrappper);
+
+    // Reset existing lists
+    firstMenuWrappper.innerHTML = "";
+    mainMenuWrappper.innerHTML = "";
+
+    firstCourseTitle.className = "";
+    firstCourseTitle.innerHTML = `<strong>First Course : </strong> ${packageMenutitle_firstCourse}`;
+    firstMenuWrappper.appendChild(firstCourseTitle);
+
+    firstCourseSelectedItems.forEach((firstMenu) => {
+      firstMenufirstmenuSelected = document.createElement("li");
+      firstMenufirstmenuSelected.textContent = firstMenu;
+      firstMenuWrappper.appendChild(firstMenufirstmenuSelected);
+    });
+
+    mainCourseTitle.className = "";
+    mainCourseTitle.innerHTML = `<strong>Main Course : </strong> ${packageMenutitle_mainCourse}`;
+    mainMenuWrappper.appendChild(mainCourseTitle);
+
+    mainCourseSelectedItems.forEach((secondMenu) => {
+      mainMenufirstmenuSelected = document.createElement("li");
+      mainMenufirstmenuSelected.textContent = secondMenu;
+      mainMenuWrappper.appendChild(mainMenufirstmenuSelected);
+    });
   }
 
   createElement = false;

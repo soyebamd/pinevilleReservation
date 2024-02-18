@@ -20,6 +20,15 @@ const peopleCount = [35, 35, 100];
 
 let getPeopleCount = 0;
 
+let pakcagePrice;
+let packageTitle;
+let packageMenutitle_firstCourse;
+
+let packageMenutitle_mainCourse;
+
+let firstCourseSelectedItems = [];
+let mainCourseSelectedItems = [];
+
 // Days
 const days = [
   "Sunday",
@@ -285,6 +294,7 @@ function lunchPackage() {
     const titleH4 = document.createElement("h4");
     titleH4.className = "menu__title";
     titleH4.textContent = menuCourse[index];
+    packageTitle = titleH4.textContent;
 
     //First|course wrapper
 
@@ -302,7 +312,7 @@ function lunchPackage() {
     // firstCourse title
     const firstCourse_selection = document.createElement("p");
     firstCourse_selection.innerHTML =
-      "<strong>" +
+      "<strong class='first-course-selection'>" +
       packageMenu[currentMenu].firstCourse.subtitle[index] +
       "</strong>";
 
@@ -330,7 +340,7 @@ function lunchPackage() {
     // Main course content
     const mainCourse_selection = document.createElement("p");
     mainCourse_selection.innerHTML =
-      "<strong>" +
+      "<strong class='main-course-selection'>" +
       packageMenu[currentMenu].mainCourse.subtitle[index] +
       "</strong>";
 
@@ -344,6 +354,13 @@ function lunchPackage() {
     packagePrice.className = "menu__items__price";
     packagePrice.textContent =
       "$" + packageMenu[currentMenu].price[index] + "  per person";
+
+    const packageMenuPrice = document.createElement("input");
+    packageMenuPrice.type = "radio";
+    packageMenuPrice.className = "package-price";
+    packageMenuPrice.name = "packageMEnu";
+    packageMenuPrice.id = "pakcage" + "-" + index;
+    packageMenuPrice.value = packageMenu[currentMenu].price[index];
 
     // append invividually
     menuDiv.appendChild(titleH4);
@@ -366,6 +383,7 @@ function lunchPackage() {
     mainCourseWrapper.appendChild(mainCourse);
     mainCourseWrapper.appendChild(menuHighLighter);
     mainCourseWrapper.appendChild(packagePrice);
+    mainCourseWrapper.appendChild(packageMenuPrice);
 
     // Append main course
 
@@ -394,6 +412,76 @@ function lunchPackage() {
       }
     );
   });
+  //
+  //
+  //
+  //
+  //
+  //
+
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+  //
+
+  // getting menu Data
+  console.log("not duble");
+  let checkOptionsMenu = document.querySelectorAll(".menu");
+  let menu__title = document.querySelectorAll(".menu__title");
+  let coursetitle_first = document.querySelectorAll(".first-course-selection");
+  let coursetitle_main = document.querySelectorAll(".main-course-selection");
+
+  pakcagePrice = document.querySelectorAll(".package-price");
+
+  checkOptionsMenu.forEach((selectedMenu, index) => {
+    selectedMenu.addEventListener("change", function () {
+      packageMenutitle_firstCourse = coursetitle_first[index].textContent;
+      packageMenutitle_mainCourse = coursetitle_main[index].textContent;
+
+      selectedMenu.classList.add("selected-menu");
+      checkOptionsMenu.forEach((ss, index) => {
+        ss.classList.remove("selected-menu");
+      });
+
+      pakcagePrice[index].checked = true;
+
+      //resent all already selected menus
+
+      if ((pakcagePrice[index].checked = true)) {
+        console.log(pakcagePrice[index].value);
+        checkOptionsMenu[index].classList.add("selected-menu");
+        packageTitle = menu__title[index];
+
+        const firstSelectedMenu = document.querySelectorAll(
+          ".selected-menu .first-course-menu__items .form-check-input"
+        );
+        firstCourseSelectedItems = [];
+        firstSelectedMenu.forEach((selectedItem) => {
+          if (selectedItem.checked) {
+            console.log(selectedItem.value); // Log the value of the checked item
+            firstCourseSelectedItems.push(selectedItem.value);
+          }
+        });
+
+        const mainSelectedMenu = document.querySelectorAll(
+          ".selected-menu .main-course-menu__items .form-check-input"
+        );
+        mainCourseSelectedItems = [];
+        mainSelectedMenu.forEach((selectedItem) => {
+          if (selectedItem.checked) {
+            console.log(selectedItem.value); // Log the value of the checked item
+            mainCourseSelectedItems.push(selectedItem.value);
+          }
+        });
+      }
+    });
+  });
+
+  //# end menu data
 
   // Load Extra Menu to Choose
 
@@ -411,11 +499,11 @@ function lunchPackage() {
     barContainer.appendChild(col);
   }
 
-  function barMenuItems(menuId, inputName, labelText, inputValue, index) {
+  function barMenuItems(type, menuId, inputName, labelText, inputValue, index) {
     // input
 
     menuItem = document.createElement("input");
-    menuItem.type = "checkbox";
+    menuItem.type = type;
     menuItem.className = "form-check-input";
     menuItem.name = inputName;
     menuItem.id = inputName.toLowerCase().replace(/\s+/g, "-") + index;
@@ -449,6 +537,7 @@ function lunchPackage() {
     let getPrice = barMenu.price[index];
 
     barMenuItems(
+      "radio",
       extraItemCol1,
       "barOptions",
       menu + " $" + getPrice,
@@ -497,6 +586,7 @@ function lunchPackage() {
   if (showDefaultDesertMenu) {
     dessertMenuItems.menuOptions[0].forEach((firstItem, index) => {
       barMenuItems(
+        "checkbox",
         radioOptionContainer,
         "desert-option-menu",
         firstItem,
@@ -514,6 +604,7 @@ function lunchPackage() {
 
       dessertMenuItems.menuOptions[index].forEach((menuItems, index) => {
         barMenuItems(
+          "checkbox",
           radioOptionContainer,
           "desert-option-menu",
           menuItems,
@@ -525,6 +616,16 @@ function lunchPackage() {
   });
 
   // Message
+
+  let barOption = document.querySelectorAll('[name="barOptions"]');
+
+  barOption.forEach((barChoice) => {
+    barChoice.addEventListener("change", function () {
+      if (this.checked) {
+        console.log(this.value);
+      }
+    });
+  });
 
   const messageWrapper = document.createElement("div");
 
@@ -576,10 +677,12 @@ function loadMenu() {
                 if (selectedItem > maxChoices && maxChoices !== -1) {
                   alert("Can't select more than " + maxChoices + " Items");
                   this.checked = false;
-                  selectedItem--; // Decrement count if selection exceeds limit
+                  selectedItem--;
                 }
+                //  console.log(this.value);
+                //  console.log(this.parentNode);
               } else {
-                selectedItem--; // Decrement count when checkbox is unchecked
+                selectedItem--;
               }
             });
           });

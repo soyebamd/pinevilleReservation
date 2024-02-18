@@ -200,10 +200,10 @@ const packageMenu = {
     },
     mainCourse: {
       subtitle: [
-        "FIRST COURSE- CHOICE OF",
-        "FIRST COURSE- CHOICE OF",
-        "FIRST COURSE- CHOICE OF",
-        "FIRST COURSE- CHOICE OF",
+        "MAIN COURSE- CHOICE OF",
+        "MAIN COURSE- CHOICE OF",
+        "MAIN COURSE- CHOICE OF",
+        "MAIN COURSE- CHOICE OF",
       ],
       itemOption: [
         "choose 4 to feature",
