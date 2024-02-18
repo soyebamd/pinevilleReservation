@@ -566,17 +566,20 @@ function loadMenu() {
             courseMenuItems.querySelectorAll(".form-check-input");
           let selectedItem = 0;
           inputCol.forEach((inputChecked) => {
-            inputChecked.addEventListener("input", function () {
+            inputChecked.addEventListener("change", function () {
+              // Changed "input" to "change"
               const maxChoices =
                 packageMenu[currentMenu][courseForValidation].maxSelection[i];
-              //console.log(maxChoices);
 
               if (this.checked) {
                 selectedItem++;
-                if (selectedItem > maxChoices && maxChoices != -1) {
-                  alert("Can't select more then " + maxChoices + " Items");
+                if (selectedItem > maxChoices && maxChoices !== -1) {
+                  alert("Can't select more than " + maxChoices + " Items");
                   this.checked = false;
+                  selectedItem--; // Decrement count if selection exceeds limit
                 }
+              } else {
+                selectedItem--; // Decrement count when checkbox is unchecked
               }
             });
           });
