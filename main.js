@@ -20,7 +20,7 @@ const peopleCount = [35, 35, 100];
 
 let getPeopleCount = 0;
 
-let pakcagePrice;
+let packagePrice;
 let packageTitle;
 let packageMenutitle_firstCourse;
 
@@ -29,6 +29,18 @@ let packageMenutitle_mainCourse;
 let firstCourseSelectedItems = [];
 let mainCourseSelectedItems = [];
 
+let packageCategoryPrice = 0;
+
+let barOptionSelectedName;
+let barOptionSelectedPrice = 0;
+
+let menuOptionSelectedValue;
+let menuOptionSelectedId;
+let selectedDesertOptions;
+let selectedDesertOptionsPrice;
+let cakeFees = 0;
+
+let getDesertChoice = [];
 // Days
 const days = [
   "Sunday",
@@ -359,7 +371,7 @@ function lunchPackage() {
     packageMenuPrice.type = "radio";
     packageMenuPrice.className = "package-price";
     packageMenuPrice.name = "packageMEnu";
-    packageMenuPrice.id = "pakcage" + "-" + index;
+    packageMenuPrice.id = "package" + "-" + index;
     packageMenuPrice.value = packageMenu[currentMenu].price[index];
 
     // append invividually
@@ -435,24 +447,28 @@ function lunchPackage() {
   let coursetitle_first = document.querySelectorAll(".first-course-selection");
   let coursetitle_main = document.querySelectorAll(".main-course-selection");
 
-  pakcagePrice = document.querySelectorAll(".package-price");
+  packagePrice = document.querySelectorAll(".package-price");
 
   checkOptionsMenu.forEach((selectedMenu, index) => {
-    selectedMenu.addEventListener("change", function () {
+    selectedMenu.addEventListener("click", function () {
       packageMenutitle_firstCourse = coursetitle_first[index].textContent;
       packageMenutitle_mainCourse = coursetitle_main[index].textContent;
 
       selectedMenu.classList.add("selected-menu");
+
       checkOptionsMenu.forEach((ss, index) => {
         ss.classList.remove("selected-menu");
       });
 
-      pakcagePrice[index].checked = true;
+      packagePrice[index].checked = true;
 
       //resent all already selected menus
 
-      if ((pakcagePrice[index].checked = true)) {
-        console.log(pakcagePrice[index].value);
+      if ((packagePrice[index].checked = true)) {
+        console.log(packagePrice[index].value);
+
+        packageCategoryPrice = packagePrice[index].value;
+
         checkOptionsMenu[index].classList.add("selected-menu");
         packageTitle = menu__title[index];
 
@@ -499,7 +515,15 @@ function lunchPackage() {
     barContainer.appendChild(col);
   }
 
-  function barMenuItems(type, menuId, inputName, labelText, inputValue, index) {
+  function barMenuItems(
+    type,
+    menuId,
+    inputName,
+    labelText,
+    inputValue,
+
+    index
+  ) {
     // input
 
     menuItem = document.createElement("input");
@@ -508,6 +532,7 @@ function lunchPackage() {
     menuItem.name = inputName;
     menuItem.id = inputName.toLowerCase().replace(/\s+/g, "-") + index;
     menuItem.value = inputValue;
+    menuItem.setAttribute("data-labelText", labelText);
 
     //label
     chekboxLabel = document.createElement("label");
@@ -590,7 +615,7 @@ function lunchPackage() {
         radioOptionContainer,
         "desert-option-menu",
         firstItem,
-        firstItem,
+        3,
         index // Use index 0 to load only the default option
       );
     }); // Get the default option
@@ -601,6 +626,14 @@ function lunchPackage() {
       radioOptionContainer.textContent = "";
       const selectedMenu = event.target.value;
       console.log("Selected Menu:", index + selectedMenu);
+
+      if (index == 1) {
+        cakeFees = 3;
+      } else {
+        cakeFees = 0;
+      }
+
+      selectedDesertOptions = selectedMenu;
 
       dessertMenuItems.menuOptions[index].forEach((menuItems, index) => {
         barMenuItems(
@@ -615,14 +648,85 @@ function lunchPackage() {
     });
   });
 
-  // Message
-
+  // CHOOSE BAR OPTION
   let barOption = document.querySelectorAll('[name="barOptions"]');
+
+  let desertOptions;
 
   barOption.forEach((barChoice) => {
     barChoice.addEventListener("change", function () {
       if (this.checked) {
-        console.log(this.value);
+        // console.log(this.value);
+        // console.log(this.getAttribute("data-labeltext"));
+        barOptionSelectedName = this.getAttribute("data-labeltext");
+        barOptionSelectedPrice = this.value;
+      }
+    });
+  });
+
+  // CHOOSE MENU OPTION
+  let menuOptions = document.querySelectorAll('[name="menu-option"]');
+
+  selectedDesertOptions = menuOptions[0].value;
+
+  menuOptions.forEach((menuChoice) => {
+    console.log(menuChoice);
+    //menuChoice[0].checked = true;
+    if (menuChoice.value == "Choose Two to feature") {
+      getDesertChoice = [];
+      desertOptions = document.querySelectorAll('[name="desert-option-menu"]');
+      desertOptions.forEach((desertChoice) => {
+        //  desertOptionsp[0].checked;
+
+        desertChoice.addEventListener("change", function () {
+          if (this.checked) {
+            console.log(this.getAttribute("data-labeltext"));
+
+            getDesertChoice.push(this.getAttribute("data-labeltext"));
+          }
+        });
+      });
+    }
+    menuChoice.addEventListener("change", function () {
+      if (this.checked) {
+        if (this.value == "Choose Two to feature") {
+          getDesertChoice = [];
+          desertOptions = document.querySelectorAll(
+            '[name="desert-option-menu"]'
+          );
+          desertOptions.forEach((desertChoice) => {
+            //  desertOptionsp[0].checked;
+
+            desertChoice.addEventListener("change", function () {
+              if (this.checked) {
+                console.log(this.getAttribute("data-labeltext"));
+
+                getDesertChoice.push(this.getAttribute("data-labeltext"));
+              }
+            });
+          });
+        } else {
+          getDesertChoice = [];
+
+          selectedDesertOptions =
+            "Bring Your Own Cake. $3 per person cutting fee";
+          selectedDesertOptionsPrice = 3;
+
+          desertOptions = document.querySelectorAll(
+            '[name="desert-option-menu"]'
+          );
+          desertOptions.forEach((desertChoice) => {
+            //  desertOptionsp[0].checked;
+
+            desertChoice.addEventListener("change", function () {
+              if (this.checked) {
+                console.log(this.getAttribute("data-labeltext"));
+
+                getDesertChoice.push(this.getAttribute("data-labeltext"));
+              }
+            });
+          });
+        }
       }
     });
   });
@@ -761,8 +865,8 @@ events.forEach((event) => {
   selectEvents.appendChild(eventOption);
 });
 
-let depositeAmount;
-let roomRental;
+let depositeAmount = 0;
+let roomRental = 0;
 let roomIndex;
 
 function mainEngine(getIndex) {
