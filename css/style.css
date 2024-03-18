@@ -1,0 +1,525 @@
+@font-face {
+  font-family: minerva-modern;
+  src: url(https://use.typekit.net/af/3d9e8b/000000000000000077359a48/30/l?subset_id=2&fvd=n4&v=3)
+      format("woff2"),
+    url(https://use.typekit.net/af/3d9e8b/000000000000000077359a48/30/d?subset_id=2&fvd=n4&v=3)
+      format("woff"),
+    url(https://use.typekit.net/af/3d9e8b/000000000000000077359a48/30/a?subset_id=2&fvd=n4&v=3)
+      format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-stretch: normal;
+  font-display: auto;
+}
+@font-face {
+  font-family: minerva-modern;
+  src: url(https://use.typekit.net/af/0de237/000000000000000077359a4c/30/l?subset_id=2&fvd=n7&v=3)
+      format("woff2"),
+    url(https://use.typekit.net/af/0de237/000000000000000077359a4c/30/d?subset_id=2&fvd=n7&v=3)
+      format("woff"),
+    url(https://use.typekit.net/af/0de237/000000000000000077359a4c/30/a?subset_id=2&fvd=n7&v=3)
+      format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: normal;
+  font-display: auto;
+}
+@font-face {
+  font-family: minerva-modern;
+  src: url(https://use.typekit.net/af/af891e/000000000000000077359a4b/30/l?subset_id=2&fvd=i4&v=3)
+      format("woff2"),
+    url(https://use.typekit.net/af/af891e/000000000000000077359a4b/30/d?subset_id=2&fvd=i4&v=3)
+      format("woff"),
+    url(https://use.typekit.net/af/af891e/000000000000000077359a4b/30/a?subset_id=2&fvd=i4&v=3)
+      format("opentype");
+  font-weight: 400;
+  font-style: italic;
+  font-stretch: normal;
+  font-display: auto;
+}
+@font-face {
+  font-family: minerva-modern;
+  src: url(https://use.typekit.net/af/e499e8/000000000000000077359a49/30/l?subset_id=2&fvd=i7&v=3)
+      format("woff2"),
+    url(https://use.typekit.net/af/e499e8/000000000000000077359a49/30/d?subset_id=2&fvd=i7&v=3)
+      format("woff"),
+    url(https://use.typekit.net/af/e499e8/000000000000000077359a49/30/a?subset_id=2&fvd=i7&v=3)
+      format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-stretch: normal;
+  font-display: auto;
+}
+@font-face {
+  font-family: anziano;
+  src: url(https://use.typekit.net/af/cb8e60/00000000000000007735ae02/30/l?subset_id=2&fvd=n7&v=3)
+      format("woff2"),
+    url(https://use.typekit.net/af/cb8e60/00000000000000007735ae02/30/d?subset_id=2&fvd=n7&v=3)
+      format("woff"),
+    url(https://use.typekit.net/af/cb8e60/00000000000000007735ae02/30/a?subset_id=2&fvd=n7&v=3)
+      format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-stretch: normal;
+  font-display: auto;
+}
+
+body {
+  font-family: minerva-modern;
+}
+
+.menu {
+  padding: 30px;
+  box-shadow: 0px 0px 0px #0000004f;
+  padding: 30px;
+  border: solid 0.5px;
+  position: relative;
+  transition: all 600ms;
+  border: solid 1px #fff;
+  cursor: pointer;
+  border: solid #153c239e 1px;
+  border-radius: 10px;
+}
+
+#bar-container {
+  margin: 40px 0;
+  border-top: solid 2px;
+  padding: 50px 0 0 0;
+}
+
+.message {
+  background: black;
+  color: #fff;
+  padding: 40px;
+}
+
+.message a {
+  color: #fff;
+}
+
+.btn {
+  background: black;
+  border: #000;
+  border-radius: 0;
+  height: 50px;
+  min-width: 200px;
+  max-width: 200px;
+  text-transform: uppercase;
+}
+
+#menu-wrapper {
+  margin: 30px 0;
+}
+
+.package-price {
+  display: none !important;
+}
+
+.menu .first-course-menu__items,
+.menu .main-course-menu__items {
+  display: none;
+}
+
+.selected-menu .first-course-menu__items,
+.selected-menu .main-course-menu__items {
+  display: block !important;
+}
+
+.input-style {
+  border: 0;
+  border-bottom: solid 0.5px;
+  width: 100%;
+  outline: 0;
+  height: 50px;
+}
+
+.menu:hover {
+  border: solid 1px;
+}
+.form-control {
+  border: solid 2px;
+  border-radius: 0;
+  height: 50px;
+}
+.logo {
+  max-width: 230px;
+}
+.list-group-item {
+  background-color: #153c23;
+  color: #fff;
+}
+
+.list-group-item:hover,
+.list-group-item.active {
+  color: #fff;
+  background: #000 !important;
+  cursor: pointer;
+  text-decoration: none;
+}
+.message {
+  border: solid 1px;
+}
+
+.selected-menu {
+  box-shadow: 0px 0px 67px #0000004f;
+
+  border: solid 0.5px;
+  position: relative;
+}
+.selected-menu:after {
+  content: "";
+  background: url(../images/Hi+res+pvt+logo.jpg);
+  width: 30px;
+  display: block;
+  position: absolute;
+  left: 3px;
+  height: 50px;
+  top: 1px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.ui-datepicker-inline {
+  margin: auto;
+}
+#deposite {
+  font-weight: bold;
+}
+ol,
+ul {
+  padding-left: 0;
+}
+
+#reservation-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#reservation-title li {
+  max-width: 310px;
+  height: 150px;
+  border: 0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  padding: 20px;
+  margin: 20px;
+  text-align: center;
+}
+
+#payment-form label {
+  font-size: 24px;
+  margin-top: 50px;
+}
+
+div#card-element {
+  margin: 20px 0;
+  box-shadow: 0 0 1px #000;
+  padding: 15px;
+  border-radius: 0;
+}
+
+/* checknox style*/
+
+:root {
+  --form-control-color: rebeccapurple;
+  --form-control-disabled: #959495;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.form-control--disabled {
+  color: var(--form-control-disabled);
+  cursor: not-allowed;
+}
+
+input[type="checkbox"] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  /* Remove most all native input styles */
+  appearance: none;
+  /* For iOS < 15 */
+  background-color: var(--form-background);
+  /* Not removed via appearance */
+  margin: 0;
+
+  font: inherit;
+  color: currentColor;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 0.15em;
+  transform: translateY(-0.075em);
+
+  display: grid;
+  place-content: center;
+}
+
+.cart-img {
+  max-width: 200px;
+}
+
+input[type="checkbox"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  transform: scale(0);
+  transform-origin: bottom left;
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em #fff;
+  /* Windows High Contrast Mode */
+  background-color: transparent;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
+
+input[type="checkbox"]:focus {
+  outline: max(2px, 0.15em) solid currentColor;
+  outline-offset: max(2px, 0.15em);
+}
+
+input[type="checkbox"]:disabled {
+  --form-control-color: var(--form-control-disabled);
+
+  color: var(--form-control-disabled);
+  cursor: not-allowed;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+}
+
+.form-check-input:checked {
+  background-color: #000000;
+  border-color: #153c23;
+}
+
+input[type="radio"].form-check-input:checked {
+  background-color: transparent;
+  border-color: #153c23;
+}
+
+.menu label {
+  display: inline-block;
+  padding: 0 8px;
+}
+span.labelText {
+  padding-left: 8px;
+}
+
+/* Radio input styling */
+input[type="radio"] {
+  /* Add if not using autoprefixer */
+  -webkit-appearance: none;
+  /* Remove most all native input styles */
+  appearance: none;
+  /* For iOS < 15 */
+  background-color: var(--form-background);
+  /* Not removed via appearance */
+  margin: 0;
+
+  font: inherit;
+  color: currentColor;
+  width: 1.15em;
+  height: 1.15em;
+  border: 0.15em solid currentColor;
+  border-radius: 50%; /* Make it round for radio buttons */
+  transform: translateY(-0.075em);
+
+  display: grid;
+  place-content: center;
+}
+
+input[type="radio"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  border-radius: 50%; /* Make it round for radio buttons */
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  /* box-shadow: inset 1em 1em #fff;*/
+  /* Windows High Contrast Mode */
+  background-color: #153c23;
+}
+
+input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
+input[type="radio"]:focus {
+  outline: max(2px, 0.15em) solid #fff;
+  outline-offset: max(2px, 0.15em);
+}
+
+input[type="radio"]:disabled {
+  --form-control-color: var(--form-control-disabled);
+
+  color: var(--form-control-disabled);
+  cursor: not-allowed;
+}
+
+#menu-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+#menu-message {
+  text-align: center;
+}
+.form-check-label {
+  cursor: pointer;
+  transition: all 300ms;
+  transform: scale(1);
+}
+
+label.form-check-label:hover {
+  transform: scale(1.05);
+  background-color: white;
+  box-shadow: 0 0 1px;
+}
+
+#menu-wrapper label.form-check-label {
+  background: #fff;
+  color: #000;
+  max-width: 264px;
+
+  height: 114px;
+  border: 0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  padding: 20px;
+  width: 100%;
+  margin: 20px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.ui-datepicker-header {
+  background: #153c2324;
+}
+
+label[for="vip-treat"] {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+#menu-wrapper input:checked + label.form-check-label {
+  background: #153c23;
+  color: #fff;
+}
+
+#menu-wrapper input {
+  display: none;
+}
+
+.active {
+  color: #153c23;
+  font-size: 22px;
+  text-decoration: underline;
+}
+
+.btn:hover {
+  background-color: #153c23;
+}
+
+.close {
+  font-size: 70px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  cursor: pointer;
+}
+
+.fixed-pos {
+  position: relative;
+
+  z-index: 999;
+  background: #fff;
+  margin: 0;
+
+  border: solid 6px;
+
+  height: 100%;
+
+  width: 100%;
+}
+
+.fixed-pos:after {
+  content: "";
+  width: 100%;
+  top: 0;
+  height: 100%;
+  position: absolute;
+  background: #fff url(../images/Hi+res+pvt+logo.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  z-index: -1;
+  opacity: 0.1;
+}
+#menu-selection-message {
+  font-weight: bold;
+  text-align: center;
+  font-size: 22px;
+  color: #153c23;
+  margin-bottom: 1rem;
+  color: #153c23;
+  text-decoration: underline;
+}
+
+.accordion-item:first-of-type {
+  border-radius: 0 !important;
+}
+.accordion-item {
+  background-color: transparent;
+
+  border: solid 1px;
+
+  margin: 8px;
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: transparent;
+  overflow: hidden;
+}
+
+.accordion-button:focus {
+  z-index: 3;
+  border-color: black;
+  overflow: hidden;
+  outline: 0;
+  box-shadow: 1px 1px 1px #cbcbcbd9;
+}
+
+.option-label {
+  display: flex;
+  align-items: center;
+}
+
+.option-label label {
+  padding-left: 7px;
+}
+
+@media (max-width: 992px) {
+  #reservation-title {
+    flex-direction: column;
+  }
+}

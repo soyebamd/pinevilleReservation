@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Reservation</title>
+<link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="css/style.css">
+<link rel="icon" type="image/x-icon" href="https://images.squarespace-cdn.com/content/v1/64ae4893754a931498a4a6a7/1b13d136-1981-41f6-ab4b-a7118de025fb/favicon.ico?format=100w">
+</head>
+<body>
+
+<header class="text-center px-4">
+
+<img src="https://images.squarespace-cdn.com/content/v1/64ae4893754a931498a4a6a7/331b3278-4fc7-4149-9553-4bc9503283b6/inpixio-removebg-image.png" class="img-fluid logo" >
+  <h1 class="fw-bold text-center mt-0">Book A Room at The Pineville Tavern</h1>
+
+
+<small class="text-center">
+booking system version 0.2
+</small>
+
+</header>
+
+
+<div class="container">
+
+    
+
+  
+      <form id="cart-form" action="" method="POST">
+
+  <ul id="reservation-title" class="mb-5">
+    <!--Get data from reservationTitle Array Dynamically-->
+  </ul>
+
+   <div class="mb-4"> 
+    
+    <h2 class="fw-bold fs-1 text-center mb-4">Select a Date</h2>
+    
+    <div id="datepicker-container"></div></div>
+
+  <div class="mb-4">
+ 
+  <!--Resrvation Title-->
+  <h2 id="title" class="fw-bold fs-1 text-center mb-4"></h2>
+  <!--Events-->
+</div>
+
+<div class="row">
+
+  <div class="col-lg-6">
+  <div id="event-wrapper" class=" mb-4">
+    <h3 class="fw-bold">What is the Occasion? <span id="event-message"></span></h3>
+    <select
+        id="events"
+        class="form-control mb-4"
+        aria-label="Default select example"
+      >
+    </select>
+    
+</div>
+  </div>
+
+  <div class="col-lg-6">
+  <!--People Select-->
+  <h3 class="fw-bold"> How Many Guests?<span id="max-people" class="d-none"></span> </h3>
+  <select
+        id="select-people"
+        class="form-control mb-4"
+        aria-label="Default select example"
+      >
+    <option>Select People Count</option>
+  </select>
+</div>
+  </div>
+  
+  <div id="deposite" class="text-center"></div>
+  <div id="room-rental" class="mb-4"></div>
+  <div class="menuSelection mb-4">
+    <h3 id="menu-message" class="fw-bold">Select Lunch or Dinner</h3>
+    <div id="menu-wrapper"></div>
+    <div id="menu-selection-message"></div>
+    <div id="content"></div>
+  </div>
+
+   <h2 class="my-2 mb-0"> Please complete for checkout. </h2>
+                    <div class="my-2 mt-0">
+                      <label for="cart_customerName" class="d-none">Name</label>
+                      <br>
+                      <input type="text" id="cart_customerName" class="input-style" name="cart_customerName" placeholder="Name" required/>
+                    </div>
+                    <div class="my-2">
+                      <label for="cart_customerEmail"  class="d-none">Email</label>
+                      <br>
+                      <input type="email" id="cart_customerEmail" class="input-style " name="cart_customerEmail" placeholder="Email"  required />
+                    </div>
+
+                    <div class="my-2">
+                        <label for="cart_customerPhone"  class="d-none">Phone Number</label><br>
+                        <input type="tel" id="cart_customerPhone" class="input-style" name="cart_customerPhone"   placeholder="Phone Number" required  />
+                    </div>
+
+
+
+                     <div class="my-5 d-flex align-items-center">
+                      <input type="checkbox" id="terms-policy" class="form-check-input me-2" name="terms"    required  />
+
+                        <label for="terms-policy" >  I agree to the the terms and policies. </label><br>
+
+                        
+                    </div>
+
+
+
+                              
+
+                        <div class="accordion my-5" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#policies" aria-expanded="true" aria-controls="policies">
+        POLICIES
+      </button>
+    </h2>
+    <div id="policies" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        
+        <p>All deposits are non-refundabel</p>
+        
+        </div>
+    </div>
+  </div>
+
+
+
+                      <div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#food-beverage" aria-expanded="true" aria-controls="food-beverage">
+        FOOD AND BEVERAGE
+      </button>
+    </h2>
+    <div id="food-beverage" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        
+        <p>Any event with an open bar with incur a bartender fee of $125. All open bar
+packages will be charged for every guest over the age of 21 who enters the private
+
+room. Alcoholic beverages will only be served to those 21 and older. Pineville Tavern
+reserves the right to refuse alcohol service to anyone without valid identification."</p>
+
+<p>
+"Outside desserts can be delivered to the Pineville Tavern the day of the event
+and held in our kitchen until your event time. Because of space limitations we are
+unable to accept any dessert deliveries prior to the day of the event."
+</p>
+        
+        </div>
+    </div>
+  </div>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      <div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#private-room" aria-expanded="true" aria-controls="private-room">
+        PRIVATE ROOM REQUIREMENTS
+      </button>
+    </h2>
+    <div id="private-room" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        
+        <p>
+
+            "The patron agrees to notify Pineville Tavern, no later than one week before the
+event, the exact number of adults and exact number of children attending the event.
+Deletions will not be accepted after the final guest count is provided. The patron agrees
+to pay the full amount, per person, regardless of the actual number of people in
+attendance. Pineville Tavern will accommodate all increases to guest count with proper
+notice."
+</p>
+
+
+<p>
+
+    "All events are scheduled for a 3 hour time block. Patrons are allowed access to
+the event space one hour prior to the scheduled start time. Arrivals more than 1 hour
+before the start time can be arranged for an additional fee and must be arranged
+beforehand. Events may not exceed the posted end time. Any changes to start time of
+event cannot be guaranteed."
+
+
+</p>
+        
+        </div>
+    </div>
+  </div>
+
+
+
+
+  
+</div>
+
+
+
+
+
+
+
+
+                      <div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#payment" aria-expanded="true" aria-controls="payment">
+       PAYMENTS
+      </button>
+    </h2>
+    <div id="payment" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        
+        <p>
+
+         "Deposits will be deducted from the final bill at the conclusion of the
+
+event. Final payment is due immediately once the event has ended. Payment can be
+made in the form of credit card, cash or Pineville Tavern gift card. We do not accept
+
+2
+
+personal or business checks of any kind to pay the balance. Pineville Tavern permits 4
+separate transactions for all private events."
+
+</p>
+
+<p>
+    All events are subject to 20% gratuity, 3% administrative fee and 6% sales tax.</p>
+
+    <p>
+
+        
+"Tax exempt groups must provide tax ID information to Catering Coordinator upon
+booking of event."
+</p>
+        
+        </div>
+    </div>
+  </div>
+
+
+
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      <div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#decor" aria-expanded="true" aria-controls="decor">
+      DECOR
+      </button>
+    </h2>
+    <div id="decor" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        
+        <p>
+
+        "All décor must be approved by Pineville Tavern/ Catering Coordinator. Under no
+circumstances do we allow patrons to use duct tape, masking tape, packing tape,
+command strips, glitter or confetti. To preserve the delicate and historic patina on the
+walls we do not allow anything to be hung on the walls. As stated above under “Private
+Room Requirements” patrons are allowed access to the event space one hour prior to
+start time. Patrons are responsible for their personal items, belongings and labor as it
+relates to décor and set up."
+</p>
+        
+        </div>
+    </div>
+  </div>
+
+  
+</div>
+
+
+
+
+
+
+
+
+                      <div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button text-uppercase" type="button" data-bs-toggle="collapse" data-bs-target="#liability" aria-expanded="true" aria-controls="liability">
+     Liability & Force Majeure:
+      </button>
+    </h2>
+    <div id="liability" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        
+        <p>
+
+      "Pineville Tavern is not responsible for any personal injury, personal property
+damage, lost or stolen items for any guests attending an event. Pineville Tavern should
+have no responsibility with regards to conditions beyond our control; this includes
+storms, power outages, floods, and other “natural causes”."
+</p>
+        
+        </div>
+    </div>
+  </div>
+
+  
+</div>
+
+
+
+
+                      <div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#amendments" aria-expanded="true" aria-controls="amendments">
+  AMENDMENTS
+      </button>
+    </h2>
+    <div id="amendments" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        
+        <p>
+"Patron agrees that any amendments made to this contract must be in writing where
+they must be signed by both parties. As such, any amendments made will be applied
+to this contract."
+</p>
+        
+        </div>
+    </div>
+  </div>
+
+  
+</div>
+
+
+
+
+
+                      <div class="accordion" id="accordionExample">
+  <div class="accordion-item">
+    <h2 class="accordion-header">
+      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#terms" aria-expanded="true" aria-controls="terms">
+ACCEPTANCE OF TERMS      </button>
+    </h2>
+    <div id="terms" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+      <div class="accordion-body">
+        
+        <p>
+Placing a deposit agrees to all above pricing, terms and conditions set forth in this
+contract.
+</p>
+        
+        </div>
+    </div>
+  </div>
+
+  
+</div>
+
+
+
+
+
+
+
+                    </div>
+
+
+
+                    
+
+
+
+
+
+                      <button type="submit" class="btn btn-primary mb-5" name="submit" id="addtocart">Add to Cart</button>
+
+
+</form>
+
+
+<div id="cart" class="cart-wrapper container-fluid d-none">
+
+  <div class="close" id="close"><i class="fa-solid fa-xmark"></i></div>
+
+<div class="p-5 row">
+<!-- 
+  <div class="text-center  col w-100">
+  <img src="https://images.squarespace-cdn.com/content/v1/64ae4893754a931498a4a6a7/331b3278-4fc7-4149-9553-4bc9503283b6/inpixio-removebg-image.png" class="cart-img">
+</div> -->
+
+
+  <div id="getting-info" class=" col-lg-6">
+
+
+    
+
+  </div>
+
+
+  <form  id="payment-form" class=" col-lg-6" action="/cart/checkout.php" method="post">
+
+    
+
+  </form>
+
+</div></div>
+
+
+
+
+
+
+
+</div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="js/menu.js"></script>
+<script src="js/main.js"></script>
+<script src="js/cart.js"></script>
+
+</body>
+</html>

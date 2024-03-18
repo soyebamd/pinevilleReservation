@@ -1,4 +1,4 @@
-// Pineville Tavern Rservaton System
+// Pineville Tavern Rservaton SystemroomName
 // Software Version - V0.0
 // https://www.pinevilletavern.com/
 
@@ -14,18 +14,41 @@ const events = [
   "Social Group",
 ];
 
+// these are block date and data
+const blockDate = ["3/20/2024", "3/22/2024", "3/25/2024", "4/10/2024"];
+
+const blockRoom = ["1742 Room", "Mural Room", "1742 Room", "The Garden"];
+
+const blockMenu = ["Lunch", "Dinner", "Dinner", "Lunch"];
+
+// convert for block menu Real
+
+for (let i = 0; i < blockMenu.length; i++) {
+  if (blockMenu[i] === "Lunch") {
+    blockMenu[i] = "Dinner";
+  } else if (blockMenu[i] === "Dinner") {
+    blockMenu[i] = "Lunch";
+  }
+}
+
+// # end these are block date and data
+
+let currentSelectedDate;
+
 // People
 
 const peopleCount = [35, 35, 100];
 
 let getPeopleCount = 0;
 
+let roomName;
+
 let packagePrice;
 let packageTitle;
 let packageMenutitle_firstCourse;
 
 let packageMenutitle_mainCourse;
-
+let appendToRight;
 let firstCourseSelectedItems = [];
 let mainCourseSelectedItems = [];
 
@@ -39,6 +62,7 @@ let menuOptionSelectedId;
 let selectedDesertOptions;
 let selectedDesertOptionsPrice;
 let cakeFees = 0;
+let VipHideMenuItems = false;
 
 let getDesertChoice = [];
 // Days
@@ -75,6 +99,12 @@ let year;
 
 let selectedDay;
 
+currentDate = new Date();
+
+day = currentDate.getDay();
+
+let dayName = days[day];
+
 function selectedDateFunction(dateInput) {
   currentDate = dateInput;
   day = currentDate.getDate();
@@ -83,14 +113,30 @@ function selectedDateFunction(dateInput) {
   getFullDate = day + "/" + monthNames[month] + "/" + year;
 }
 
-//console.log(selectedDay + " selected dayd d");
+console.log(day + " selected dayd d");
 
 // Deposite
 const deposite = [200, 400, 1500];
 const roomRentalFees = [200, 400, 6000];
 
+const getDepositeMessage = [
+  " 1742 & Mural Room Rental  Fee (100% deposit) Monday, Tuesday, Wednesday, Thursday $" +
+    deposite[0],
+
+  " 1742 & Mural Room Rental  Fee (100% deposit) Friday, Saturday, Sunday $" +
+    deposite[1],
+
+  "The Garden - Room Rental Fee $" +
+    roomRentalFees[2] +
+    " ( deposit $" +
+    deposite[2] +
+    " )",
+];
+
 //menu selection
 const menu = ["Lunch", "Dinner", "VIP Treat"];
+
+const menuMessage = ["Select 1 of 3 menus", "Select 1 of 4 menus", ""];
 
 //Bar Selection
 const barSelection = {
@@ -141,7 +187,35 @@ const pinevilleRoom = {
     }
   },
 
-  menuSelection: [menu[0], menu[1]],
+  menuSelection: function () {
+    let foundMatch = false;
+    let loadMenu;
+    blockDate.forEach((notAvailable, i) => {
+      if (currentSelectedDate === notAvailable && this.title === blockRoom[i]) {
+        console.log(blockMenu[i] + " The Menu ");
+        menu.forEach((traceMenu, Menuindex) => {
+          if (traceMenu == blockMenu[i]) {
+            //  console.log("stop here" + traceMenu + "menu index" + index);
+
+            loadMenu = Menuindex;
+            currentMenu = blockMenu[i].toLowerCase();
+            VipHideMenuItems = false;
+
+            loadPageIntoParent("menu.html");
+
+            foundMatch = true;
+          }
+        });
+      }
+    });
+
+    if (foundMatch) {
+      return [menu[loadMenu]];
+    } else {
+      return [menu[0], menu[1]];
+    }
+  },
+
   barOption: true,
   cakeCutting: true,
 };
@@ -178,7 +252,8 @@ const muralRoom = {
     }
   },
 
-  menuSelection: [menu[0], menu[1]],
+  menuSelection: pinevilleRoom.menuSelection,
+
   barOption: true,
   cakeCutting: true,
 };
@@ -215,9 +290,51 @@ const theGarden = {
     }
   },
 
-  menuSelection: [menu[2]],
+  // menuSelection: function () {
+  //   return [menu[2]];
+  // },
+
+  // menuSelection: function () {
+  //   return [menu[2]];
+  // },
+
+  menuSelection: function () {
+    return [menu[2]];
+  },
+
   vipTreat:
     "VIP personal meeting with the Chef and The Pineville Tavern team to plan your custom menu",
+
+  // add logic here
+  //menuPackages: [menu[0], menu[1]],
+
+  menuPackages: function () {
+    let foundMatch = false;
+    let loadMenu;
+    blockDate.forEach((notAvailable, i) => {
+      if (currentSelectedDate === notAvailable && this.title === blockRoom[i]) {
+        menu.forEach((traceMenu, Menuindex) => {
+          if (traceMenu == blockMenu[i]) {
+            //  console.log("stop here" + traceMenu + "menu index" + index);
+
+            loadMenu = Menuindex;
+            //  currentMenu = blockMenu[i].toLowerCase();
+            VipHideMenuItems = false;
+
+            //    loadPageIntoParent("menu.html");
+
+            foundMatch = true;
+          }
+        });
+      }
+    });
+
+    if (foundMatch) {
+      return [menu[loadMenu]];
+    } else {
+      return [menu[0], menu[1]];
+    }
+  },
 };
 
 const rooms = [pinevilleRoom, muralRoom, theGarden];
@@ -235,8 +352,21 @@ const elementMenuMessage = document.querySelector("#menu-message");
 let menuWrapper = document.querySelector("#menu-wrapper");
 let cakeOptionsWrapper = document.querySelector("#cake-options-wrapper");
 const selectMenu = document.querySelectorAll('[name="menu-selection"]');
+let selectSelectionMenu = document.querySelector("#menu-selection-message");
 
 const selectEvents = document.querySelector("#events");
+
+let createDepositeMessage;
+deposite.forEach((depositeMessage, index) => {
+  createDepositeMessage = document.createElement("p");
+  createDepositeMessage.id = "deposite" + depositeMessage;
+  createDepositeMessage.textContent = getDepositeMessage[index];
+  createDepositeMessage.className = "roomMessageList";
+
+  createDepositeMessage.setAttribute("data-price", depositeMessage);
+
+  elementDepositeDue.appendChild(createDepositeMessage);
+});
 
 let activeNav = false;
 let roomNav;
@@ -296,7 +426,7 @@ function lunchPackage() {
 
   menuCourse.forEach((addItem, index) => {
     const colDiv = document.createElement("div");
-    colDiv.className = "col-md-4";
+    colDiv.className = "col-lg-4 mb-2";
 
     const menuDiv = document.createElement("div");
     menuDiv.className = "menu " + currentMenu + "-" + index;
@@ -305,8 +435,9 @@ function lunchPackage() {
     //Menu Title
     const titleH4 = document.createElement("h4");
     titleH4.className = "menu__title";
-    titleH4.textContent = menuCourse[index];
-    packageTitle = titleH4.textContent;
+    titleH4.textContent =
+      menuCourse[index] + " $" + packageMenu[currentMenu].price[index];
+    //packageTitle = tmenuCourse[index];
 
     //First|course wrapper
 
@@ -470,7 +601,7 @@ function lunchPackage() {
         packageCategoryPrice = packagePrice[index].value;
 
         checkOptionsMenu[index].classList.add("selected-menu");
-        packageTitle = menu__title[index];
+        packageTitle = menu__title[index].textContent;
 
         const firstSelectedMenu = document.querySelectorAll(
           ".selected-menu .first-course-menu__items .form-check-input"
@@ -509,7 +640,7 @@ function lunchPackage() {
 
   for (let i = 1; i <= colCount; i++) {
     col = document.createElement("div");
-    col.className = "col-md-4";
+    col.className = "col-lg-4";
     col.id = "col-" + i;
 
     barContainer.appendChild(col);
@@ -575,7 +706,39 @@ function lunchPackage() {
   desertHeading.textContent = "Dessert Menu";
   extraItemCol2.appendChild(desertHeading);
 
+  const desertpara = document.createElement("p");
+  desertpara.innerHTML =
+    "Optional Dessert Packages Select 2 Desserts $10. Priced Per Person. <br> Bring Your Own Cake $3. Priced Per Person Cutting Fee";
+  extraItemCol2.appendChild(desertpara);
+
   //
+
+  const chooseTwoContainer = document.createElement("div");
+  chooseTwoContainer.id = "choose-two-desert";
+  chooseTwoContainer.className = "my-3 border-bottom pb-2";
+
+  const optionLabelcontainer = document.createElement("div");
+  optionLabelcontainer.className = "option-label";
+
+  const optionLabelcontainer1 = document.createElement("div");
+  optionLabelcontainer1.className = "option-label";
+
+  const optionLabelcontainer2 = document.createElement("div");
+  optionLabelcontainer2.className = "option-label";
+
+  const chooseTwoitems = document.createElement("div");
+  chooseTwoitems.id = "choose-two-desert-container";
+
+  const chooseCakeContainer = document.createElement("div");
+  chooseCakeContainer.id = "choose-cake-desert";
+  chooseCakeContainer.className = "my-3 border-bottom pb-2";
+
+  const noDesert = document.createElement("div");
+  noDesert.id = "no-desert";
+  noDesert.className = "my-3 border-bottom pb-2";
+
+  const chooseCakeitems = document.createElement("div");
+  chooseCakeitems.id = "choose-cake-desert-container";
 
   // Create radio buttons for the menu options
   let showDefaultDesertMenu = false;
@@ -586,18 +749,48 @@ function lunchPackage() {
     radioButton.name = "menu-option";
     radioButton.value = menuItem;
 
-    if (index == 0) {
-      radioButton.setAttribute("checked", true);
-      showDefaultDesertMenu = true;
-    }
-
     const label = document.createElement("label");
     label.setAttribute("for", "menu-option-" + index);
     label.textContent = menuItem;
 
-    extraItemCol2.appendChild(radioButton);
-    extraItemCol2.appendChild(label);
-    extraItemCol2.appendChild(document.createElement("br"));
+    if (index == 0) {
+      radioButton.setAttribute("checked", true);
+      showDefaultDesertMenu = true;
+
+      optionLabelcontainer.appendChild(radioButton);
+      optionLabelcontainer.appendChild(label);
+
+      chooseTwoContainer.appendChild(optionLabelcontainer);
+      chooseTwoContainer.appendChild(chooseTwoitems);
+    }
+
+    if (index == 1) {
+      showDefaultDesertMenu = false;
+
+      optionLabelcontainer2.appendChild(radioButton);
+      optionLabelcontainer2.appendChild(label);
+      noDesert.appendChild(optionLabelcontainer2);
+
+      //noDesert.appendChild(chooseCakeitems);
+    }
+
+    if (index == 2) {
+      showDefaultDesertMenu = false;
+
+      optionLabelcontainer1.appendChild(radioButton);
+      optionLabelcontainer1.appendChild(label);
+
+      chooseCakeContainer.appendChild(optionLabelcontainer1);
+      //chooseCakeContainer.appendChild(chooseCakeitems);
+    }
+
+    extraItemCol2.appendChild(chooseTwoContainer);
+
+    extraItemCol2.appendChild(noDesert);
+
+    extraItemCol2.appendChild(chooseCakeContainer);
+
+    // extraItemCol2.appendChild(document.createElement("br"));
   });
 
   const radioOptionContainer = document.createElement("div");
@@ -608,11 +801,15 @@ function lunchPackage() {
 
   // Add event listener to radio buttons
   const radioButtons = document.querySelectorAll('input[name="menu-option"]');
-  if (showDefaultDesertMenu) {
+
+  let deraultShow = document.getElementById("choose-two-desert-container");
+  appendToRight = "";
+  if (deraultShow) {
+    cakeFees = dessertMenuItems.price[0];
     dessertMenuItems.menuOptions[0].forEach((firstItem, index) => {
       barMenuItems(
         "checkbox",
-        radioOptionContainer,
+        chooseTwoitems,
         "desert-option-menu",
         firstItem,
         3,
@@ -623,14 +820,31 @@ function lunchPackage() {
 
   radioButtons.forEach((radioButton, index) => {
     radioButton.addEventListener("change", (event) => {
+      deraultShow.textContent = "";
+
       radioOptionContainer.textContent = "";
       const selectedMenu = event.target.value;
       console.log("Selected Menu:", index + selectedMenu);
+      appendToRight.textContent = "";
 
-      if (index == 1) {
-        cakeFees = 3;
+      cakeFees = dessertMenuItems.price[index];
+
+      console.log(
+        radioButton.value +
+          "---:" +
+          index +
+          "Price $" +
+          cakeFees +
+          "$RADKO BUTTON FOR WRAP INDEX MENUS"
+      );
+
+      if (radioButton.value == "Dessert") {
+        appendToRight.textContent = "";
+        appendToRight = chooseTwoitems;
+      } else if (radioButton.value == "Bring Your Own Cake") {
+        appendToRight.textContent = "";
+        appendToRight = chooseCakeitems;
       } else {
-        cakeFees = 0;
       }
 
       selectedDesertOptions = selectedMenu;
@@ -638,7 +852,7 @@ function lunchPackage() {
       dessertMenuItems.menuOptions[index].forEach((menuItems, index) => {
         barMenuItems(
           "checkbox",
-          radioOptionContainer,
+          appendToRight,
           "desert-option-menu",
           menuItems,
           menuItems,
@@ -659,7 +873,12 @@ function lunchPackage() {
         // console.log(this.value);
         // console.log(this.getAttribute("data-labeltext"));
         barOptionSelectedName = this.getAttribute("data-labeltext");
-        barOptionSelectedPrice = this.value;
+        if (this.value != Number(125)) {
+          barOptionSelectedPrice = this.value * elementPeopleCount.value;
+        } else {
+          barOptionSelectedPrice = this.value;
+        }
+        console.log(barOptionSelectedPrice + "Price valuesss");
       }
     });
   });
@@ -670,26 +889,39 @@ function lunchPackage() {
   selectedDesertOptions = menuOptions[0].value;
 
   menuOptions.forEach((menuChoice) => {
-    console.log(menuChoice);
+    // console.log(menuChoice);
     //menuChoice[0].checked = true;
-    if (menuChoice.value == "Choose Two to feature") {
+
+    let increase = 0;
+    if (menuChoice.value == "Dessert") {
       getDesertChoice = [];
       desertOptions = document.querySelectorAll('[name="desert-option-menu"]');
       desertOptions.forEach((desertChoice) => {
-        //  desertOptionsp[0].checked;
+        // desertChoice[0].checked = true;
 
         desertChoice.addEventListener("change", function () {
           if (this.checked) {
+            increase++;
+            if (increase > 2) {
+              alert("Can't select more then 2 items");
+              this.checked = false;
+              increase--;
+            }
             console.log(this.getAttribute("data-labeltext"));
 
             getDesertChoice.push(this.getAttribute("data-labeltext"));
+          } else {
+            increase--; // Decrease by 1 if unchecked
           }
+          console.log(increase + "INCREASED");
         });
       });
     }
+
     menuChoice.addEventListener("change", function () {
+      increase = 0;
       if (this.checked) {
-        if (this.value == "Choose Two to feature") {
+        if (this.value == "Dessert") {
           getDesertChoice = [];
           desertOptions = document.querySelectorAll(
             '[name="desert-option-menu"]'
@@ -699,27 +931,43 @@ function lunchPackage() {
 
             desertChoice.addEventListener("change", function () {
               if (this.checked) {
+                increase++;
+                if (increase > 2) {
+                  alert("Can't select more then 2 items");
+                  increase--;
+                  this.checked = false;
+                }
+
                 console.log(this.getAttribute("data-labeltext"));
 
                 getDesertChoice.push(this.getAttribute("data-labeltext"));
+              } else {
+                increase--; // Decrease by 1 if unchecked
               }
+
+              console.log(increase + "INCREASED");
             });
           });
         } else {
           getDesertChoice = [];
 
-          selectedDesertOptions =
-            "Bring Your Own Cake. $3 per person cutting fee";
           selectedDesertOptionsPrice = 3;
 
           desertOptions = document.querySelectorAll(
             '[name="desert-option-menu"]'
           );
+
           desertOptions.forEach((desertChoice) => {
             //  desertOptionsp[0].checked;
 
             desertChoice.addEventListener("change", function () {
               if (this.checked) {
+                increase++;
+
+                // if (increase > 2) {
+                //   alert("Cant select more then two options");
+                //   this.checked = false;
+                // }
                 console.log(this.getAttribute("data-labeltext"));
 
                 getDesertChoice.push(this.getAttribute("data-labeltext"));
@@ -740,7 +988,7 @@ function lunchPackage() {
   message.forEach((message) => {
     const messageP = document.createElement("p");
     messageP.className = "message_txt";
-    messageP.textContent = message;
+    messageP.innerHTML = message;
     messageWrapper.appendChild(messageP);
   });
 
@@ -758,7 +1006,7 @@ function loadMenu() {
 
   function validationOfMenuItems(menuCate, courseForValidation) {
     validateMenu.forEach((menu, i) => {
-      console.log(menu);
+      // console.log(menu);
       // const getSameMenuIndex = document.querySelector();
       const lunchElement = document.querySelector("." + currentMenu + "-" + i);
       const firstCourseMenuItems = lunchElement.querySelectorAll(
@@ -872,6 +1120,8 @@ let roomIndex;
 function mainEngine(getIndex) {
   elementTitle.textContent = rooms[getIndex].title;
 
+  roomName = elementTitle.textContent;
+
   getPeopleCount = rooms[getIndex].people;
 
   elementMaxPeople.textContent = getPeopleCount;
@@ -893,24 +1143,23 @@ function mainEngine(getIndex) {
   createPeopleCountList("Select People");
 
   //
-  for (let intPeople = 0; intPeople <= getPeopleCount; intPeople++) {
+  for (let intPeople = 12; intPeople <= getPeopleCount; intPeople++) {
     createPeopleCountList(intPeople);
   }
 
   depositeAmount = rooms[getIndex].deposite();
-  console.log(getIndex + " get error fixed");
 
-  if (depositeAmount == 200) {
-    elementDepositeDue.textContent =
-      "Room Rental Fee (100% deposit) Monday, Tuesday, Wednesday, Thursday $" +
-      depositeAmount;
-  }
+  const roommm = document.querySelectorAll(".roomMessageList");
 
-  if (depositeAmount == 400) {
-    elementDepositeDue.textContent =
-      "Room Rental Fee (100% deposit) Friday, Saturday, Sunday $" +
-      depositeAmount;
-  }
+  roommm.forEach((element, i) => {
+    if (element.getAttribute("data-price") == depositeAmount) {
+      element.classList.add("active");
+    } else {
+      element.classList.remove("active");
+    }
+  });
+
+  //createDepositeMessage[getIndex].className = "active";
 
   roomRental = rooms[getIndex].roomRental();
   roomIndex = getIndex;
@@ -921,8 +1170,12 @@ function mainEngine(getIndex) {
 
   menuWrapper.innerHTML = "";
 
-  rooms[getIndex].menuSelection.forEach((menu, index) => {
+  rooms[getIndex].menuSelection.call(rooms[getIndex]).forEach((menu, index) => {
     // create check/radiobox
+
+    // rooms[getIndex].test.call(rooms[getIndex]);
+
+    console.log(selectedDay + "selectedDay");
 
     createInput(
       "input",
@@ -940,6 +1193,7 @@ function mainEngine(getIndex) {
     }
 
     if (index === 0) {
+      selectSelectionMenu.textContent = menuMessage[index];
       checkOption.setAttribute("checked", true);
       console.log(checkOption.value + " Loading Menu");
       if (checkOption.value == "Lunch") {
@@ -949,9 +1203,53 @@ function mainEngine(getIndex) {
     }
 
     if (menu === "VIP Treat") {
+      selectSelectionMenu.textContent = "";
+      menuWrapper.classList.add("flex-column");
       const message = document.querySelector("#message");
-      elementMenuMessage.textContent = menu;
-      message.textContent = `VIP personal meeting with the Chef and The Pineville Tavern team to plan your custom menu `;
+      elementMenuMessage.textContent = "    ";
+      message.textContent = ` VIP menu and beverage cost will be decided when you meet with the Catering Director and Chef. This price is not included on this quote. `;
+
+      const vipContainer = document.createElement("div");
+
+      vipContainer.style.display = "flex";
+
+      vipContainer.id = "vip-container";
+
+      menuWrapper.appendChild(vipContainer);
+
+      menuWrapper.style.display = "flex";
+
+      rooms[getIndex].menuPackages
+        .call(rooms[getIndex])
+        .forEach((menu, index) => {
+          createInput(
+            "input",
+            "radio",
+            "form-check-input",
+            "menu-selection-vip",
+            menu,
+            index,
+            "message",
+            vipContainer
+          );
+        });
+      const checkboxes = document.querySelectorAll(
+        'input[name="menu-selection-vip"]'
+      );
+
+      checkboxes[index].checked = true;
+
+      checkboxes.forEach(function (checkbox) {
+        checkbox.addEventListener("change", function () {
+          if (this.checked) {
+            const value = this.value;
+            VipHideMenuItems = true;
+            currentMenu = value;
+          }
+        });
+      });
+    } else {
+      menuWrapper.classList.remove("flex-column");
     }
   });
   //if checked load menu via ajax
@@ -961,16 +1259,20 @@ function mainEngine(getIndex) {
   loadingOption.textContent = "";
   content.textContent = "";
 
-  menuSelection.forEach((menuOption) => {
+  menuSelection.forEach((menuOption, i) => {
     menuOption.addEventListener("change", function () {
       if (this.checked) {
         console.log(this.value + " Loading Menu");
 
+        selectSelectionMenu.textContent = menuMessage[i];
+
         if (this.value == "Lunch") {
           currentMenu = "lunch";
+          VipHideMenuItems = false;
           loadPageIntoParent("menu.html");
         } else {
           currentMenu = "dinner";
+          VipHideMenuItems = false;
           loadPageIntoParent("menu.html");
         }
       }
@@ -1021,32 +1323,34 @@ mainEngine(0);
 selectedDateFunction(new Date());
 
 function updateDayRoomPrice(roomindex, day) {
+  //rooms[roomindex].menuSelection = [menu[0]];
+
+  console.log(rooms[roomindex].menuSelection);
+  console.log(" IT IS POSSIBLE TO ADD CODE HERE ");
+
   rooms[roomindex].day = day;
   //console.log(rooms[roomIndex].deposite());
 
   depositeAmount = rooms[roomindex].deposite();
   roomRental = rooms[roomIndex].roomRental();
 
-  if (depositeAmount == 200) {
-    elementDepositeDue.textContent =
-      "Room Rental Fee (100% deposit) Monday, Tuesday, Wednesday, Thursday $" +
-      depositeAmount;
-  }
+  console.log(createDepositeMessage[day] + "Add active class here");
 
-  if (depositeAmount == 400) {
-    elementDepositeDue.textContent =
-      "Room Rental Fee (100% deposit) Friday, Saturday, Sunday $" +
-      depositeAmount;
-  } else {
-    elementDepositeDue.textContent =
-      "The Garden - Room Rental Fee $" +
-      roomRental +
-      " ( deposit $" +
-      depositeAmount +
-      " )";
-  }
+  console.log(rooms[roomindex].menuSelection + "Room INEDX");
 
-  console.log(getFullDate);
+  const roommm = document.querySelectorAll(".roomMessageList");
+
+  roommm.forEach((element, i) => {
+    if (element.getAttribute("data-price") == depositeAmount) {
+      element.classList.add("active");
+    } else {
+      element.classList.remove("active");
+    }
+  });
+
+  // if (depositeAmount == getDepositeMessage[roomindex]) {
+  //   createDepositeMessage.className = "active";
+  // }
 }
 
 console.log("On Load:", getFullDate);
@@ -1054,14 +1358,18 @@ console.log("On Load:", getFullDate);
 $(function () {
   $("#datepicker-container").datepicker({
     minDate: 0,
-    dateFormat: "mm-dd-yy",
+    // dateFormat: "mm-dd-yy",
 
     onSelect: function (dateText) {
       // Get the day
 
+      currentSelectedDate = new Date(dateText).toLocaleDateString("en-US");
+
       let selectedDate = new Date(dateText);
       let dayIndex = selectedDate.getDay();
       let getDay = days[dayIndex];
+      mainEngine(roomIndex);
+      dayName = getDay;
       selectedDay = getDay;
       console.log("Selected Date:", getDay);
 
@@ -1074,4 +1382,17 @@ $(function () {
   $("#datepicker-container")
     .datepicker("widget")
     .appendTo("#datepicker-container");
+});
+
+// checkbox
+
+const termsPolicy = document.querySelector("#terms-policy");
+const accordionExample = document.querySelector("#accordionExample");
+
+termsPolicy.addEventListener("change", function () {
+  if (this.checked) {
+    accordionExample.classList.add("d-none");
+  } else {
+    accordionExample.classList.remove("d-none");
+  }
 });
